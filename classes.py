@@ -11,13 +11,17 @@ class system:
         self.board_y = board_y
         self.board_z = board_z
 
+        # Box size, x_min, x_max, y_min, ...
+        self.boxsize=(-board_x,board_x,-board_y,board_y,-board_z,board_z)
+
         self.n = num_particles
         self.particles = []
-        self.initialize_particles()
         self.dt = 0.01
 
         self.temp = temp     # degrees Kelvin
         self.energy = 3/2 * self.temp
+
+        self.initial_particles()
 
 
     def initial_particles(self):
@@ -25,13 +29,14 @@ class system:
         Initialize the list of particles
         '''
         for i in range(self.n):
-            pos_x = np.random.uniform(0,self.board_x-0.2)  # Subtract the radius
-            pos_y = np.random.uniform(0,self.board_y-0.2)
-            pos_z = np.random.uniform(0,self.board_z-0.2)
-            particle = sphere(pos=tuple(pos_x,pos_y,pos_z), radius=0.2)
+            pos_x = np.random.uniform(-self.board_x+0.2,self.board_x-0.2)  # Subtract the radius
+            pos_y = np.random.uniform(-self.board_y+0.2,self.board_y-0.2)
+            pos_z = np.random.uniform(-self.board_z+0.2,self.board_z-0.2)
+            particle = sphere(pos=tuple((pos_x,pos_y,pos_z)), radius=0.2)
             particle.mass = 4
             vel = np.random.uniform(0,1,size=3)
-            vel = vel/np.linalg.norm(vel)*(2*particle.mass*self.energy)**(1/2)
+            vel = vector(vel/np.linalg.norm(vel)*(2*particle.mass*self.energy)**(1/2))
+            particle.velocity = vel
 
             self.particles.append(particle)
 
@@ -41,9 +46,9 @@ class system:
         '''
         for p in self.particles:
             p.pos += p.velocity*self.dt
-            if p.pos.x >= self.board_x or p.pos.x <= 0:
+            if p.pos.x >= (self.board_x-0.2) or p.pos.x <= (-self.board_x+0.2):
                 p.velocity.x *= -1
-            if p.pos.y >= self.board_y or p.pos.y <= 0:
+            if p.pos.y >= (self.board_y-0.2) or p.pos.y <= (-self.board_y+0.2):
                 p.velocity.y *= -1
-            if p.pos.z >= self.board_z or p.pos.z <= 0:
+            if p.pos.z >= (self.board_z-0.2) or p.pos.z <= (-self.board_z+0.2):
                 p.velocity.z *= -1
