@@ -41,3 +41,9 @@ class system:
         '''
         for p in self.particles:
             p.pos += p.velocity*self.dt
+            if p.pos.x >= self.board_x or p.pos.x <= 0:
+                p.velocity.x *= -1
+            if p.pos.y >= self.board_y or p.pos.y <= 0:
+                p.velocity.y *= -1
+            if p.pos.z >= self.board_z or p.pos.z <= 0:
+                p.velocity.z *= -1
