@@ -3,7 +3,7 @@ import numpy as np
 from ivisual import *
 
 class system:
-    def __init__(self, board_x=10, board_y=10, board_z=10, num_particles=100, temp=2):
+    def __init__(self, board_x=10, board_y=10, board_z=10, num_particles=100, temp=2, pressure=1):
         '''
         Initialize the board
         '''
@@ -12,14 +12,21 @@ class system:
         self.board_z = board_z
 
         # Box size, x_min, x_max, y_min, ...
-        self.boxsize=(-board_x,board_x,-board_y,board_y,-board_z,board_z)
+        self.boxsize =(-board_x,board_x,-board_y,board_y,-board_z,board_z)
+        self.volume = 8*board_x*board_y*board_z
 
         self.n = num_particles
         self.particles = []
         self.dt = 0.01
 
         self.temp = temp     # degrees Kelvin
+        self.pressure = pressure
         self.energy = 3/2 * self.temp
+
+        self.temp_arr = []
+        self.pressure_arr = []
+        self.energy_arr = []
+        self.volume_arr = []
 
         self.initial_particles()
 
@@ -52,3 +59,26 @@ class system:
                 p.velocity.y *= -1
             if p.pos.z >= (self.board_z-0.2) or p.pos.z <= (-self.board_z+0.2):
                 p.velocity.z *= -1
+
+    def update(self):
+        self.move()
+
+class isochoric(system):
+    # Constant volume
+    def update(self, rate=0.1):
+        '''
+        Change the energy and update state of the particles
+        '''
+        self.energy += rate
+        self.temp = 2/3 * self.energy
+        self.pressure = self.n * self.temp / self.volume
+
+        self.energy_arr.append(self.energy)
+        self.temp_arr.append(self.temp)
+        self.pressure_arr.append(self.pressure)
+
+        for p in self.particles:
+            vel = np.array([p.velocity.x, p.velocity.y, p.velocity.z])
+            p.velocity = vector(vel/np.linalg.norm(vel)*(2*p.mass*self.energy)**(1/2))
+
+        self.move()
