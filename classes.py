@@ -65,11 +65,12 @@ class system:
 
 class isochoric(system):
     # Constant volume
+	
     def update(self, rate=0.1):
         '''
         Change the energy and update state of the particles
         '''
-        self.energy += rate
+        self.energy += (3/2)*self.temp*rate
         self.temp = 2/3 * self.energy
         self.pressure = self.n * self.temp / self.volume
 
