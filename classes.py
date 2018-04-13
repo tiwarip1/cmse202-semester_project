@@ -53,6 +53,15 @@ class system:
         '''
         for p in self.particles:
             p.pos += p.velocity*self.dt
+            # for other in self.particles:
+            #     if p.pos == other.pos:
+            #         continue
+            #     dist = np.sqrt((p.pos.x-other.pos.x)**2+(p.pos.y-other.pos.y)**2+(p.pos.z-other.pos.z)**2)
+            #     if dist < 0.4:
+            #         p.pos.x *= -1
+            #         p.pos.y *= -1
+            #         p.pos.z *= -1
+            # Reflect off walls of box
             if p.pos.x >= (self.board_x-0.2) or p.pos.x <= (-self.board_x+0.2):
                 p.velocity.x *= -1
             if p.pos.y >= (self.board_y-0.2) or p.pos.y <= (-self.board_y+0.2):
@@ -60,26 +69,53 @@ class system:
             if p.pos.z >= (self.board_z-0.2) or p.pos.z <= (-self.board_z+0.2):
                 p.velocity.z *= -1
 
-    def update(self):
+    def update(self, rate=0):
         self.move()
 
 class isochoric(system):
     # Constant volume
-	
+
     def update(self, rate=0.1):
         '''
         Change the energy and update state of the particles
         '''
-        self.energy += (3/2)*self.temp*rate
+        self.energy += rate
         self.temp = 2/3 * self.energy
         self.pressure = self.n * self.temp / self.volume
 
         self.energy_arr.append(self.energy)
         self.temp_arr.append(self.temp)
         self.pressure_arr.append(self.pressure)
+        self.volume_arr.append(self.volume)
 
         for p in self.particles:
             vel = np.array([p.velocity.x, p.velocity.y, p.velocity.z])
             p.velocity = vector(vel/np.linalg.norm(vel)*(2*p.mass*self.energy)**(1/2))
 
         self.move()
+
+class isothermal(system):
+    # Constant temperature
+
+    def update(self, rate=0.1):
+        '''
+        Change the volume and update the state of the particles
+        '''
+        self.volume += rate
+        self.board_y = self.volume/(8*self.board_x*self.board_z)
+        self.boxsize =(-self.board_x,self.board_x,-self.board_y,self.board_y,-self.board_z,self.board_z)
+
+        self.pressure = self.n * self.temp / self.volume
+
+        self.energy_arr.append(self.energy)
+        self.temp_arr.append(self.temp)
+        self.pressure_arr.append(self.pressure)
+        self.volume_arr.append(self.volume)
+
+        self.move()
+
+class isentropic(system):
+    # Constant entropy
+
+    def update(self, rate):
+        pass
