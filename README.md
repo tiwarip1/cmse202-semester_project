@@ -4,9 +4,6 @@ This repository contains the work done for CMSE 202-001 Final Project: Visualizi
 Thermodynamic Processes Using Python. The project simulates certain thermodynamic
 processes of ideal gasses utilizing Python classes, iVisual, and other Python packages.
 
-### Contributors
-Nathan Everett, D'Ontai Lewis, Erika Lustig, Pranjal Tiwari
-
 ## Getting Started
 These instructions will help you to run a majority of the Jupyter notebook that
 contains the visualizations, using a Python file that contains the class definitions.
