@@ -1,4 +1,3 @@
-# cmse202-semester_project
 # Visualizing Thermodynamic Processes Using Python
 
 This repository contains the work done for CMSE 202-001 Final Project: Visualizing
@@ -13,7 +12,7 @@ These instructions will help you to run a majority of the Jupyter notebook that
 contains the visualizations, using a Python file that contains the class definitions.
 
 ### Prerequisites
-The paths used in the code are optimized for Macs - will need to be changed to work
+The paths used in the code are optimized for Macs and will need to be changed to work
 on Windows computers.
 * Jupyter
 * iVisual
@@ -22,10 +21,13 @@ pip install IVisual
 ```
 * numpy
 * PIL
+```
+pip install Pillow
+```
 * Matplotlib
 
 ### Installing
-Download the Final_Project_Classes.py and Final_Project_Visualization.ipynb files
+Download the Final_Project_Classes.py and Final_Project_Visualization.ipynb files,
 or clone the repository. Those are the only two files needed to run the project.
 
 ## Running
