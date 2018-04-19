@@ -42,7 +42,7 @@ animations).
 All group members equally contributed. All work, except for presentation slides, were done in group meetings with screen-sharing. Presentation slides were completed in Google Slides with equal contribution.
 * Nathan Everett - Brainstorming, Physics equations, code proof-reading, iVisual research, presentation slides
 * D'Ontai Lewis - Brainstorming, Physics equations, code proof-reading, presentation slides
-* Erika Lustig - Brainstorming, code typing, visualizations, presentation slides
+* Erika Lustig - Brainstorming, code typing, visualizations, presentation slides, readme
 * Pranjal Tiwari - Brainstorming, Physics equations, code proof-reading, presentation slides
 
 
